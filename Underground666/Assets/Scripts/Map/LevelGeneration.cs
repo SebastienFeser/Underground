@@ -66,7 +66,23 @@ public class LevelGeneration : MonoBehaviour
     [SerializeField] GameObject doorLeft;
     [SerializeField] GameObject doorRight;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject wayPoint;
 
+
+    class WayPoint
+    {
+        public WayPoint(Vector2 positionConstruct)
+        {
+            position = positionConstruct;
+        }
+
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+        Vector2 position;
+    }
 
     class Cell
     {
@@ -240,9 +256,11 @@ public class LevelGeneration : MonoBehaviour
     List<SquareRoom> normalSquares = new List<SquareRoom>();
     List<SquareRoom> rooms = new List<SquareRoom>();
     List<Corridor> corridors = new List<Corridor>();
+    List<WayPoint> corridorsWaypoints = new List<WayPoint>();
     [SerializeField] GameObject cube;
     [SerializeField] GameObject corridorObject;
     int corridorDifference = 2;
+    int wayPointCorrection = 1;
 
     bool canSpace = true;
 
@@ -271,6 +289,7 @@ public class LevelGeneration : MonoBehaviour
         normalSquares.Clear();
         rooms.Clear();
         corridors.Clear();
+        corridorsWaypoints.Clear();
         for (int i = 0; i < cellMapSize; i++)
         {
             for (int j = 0; j < cellMapSize; j++)
@@ -408,7 +427,7 @@ public class LevelGeneration : MonoBehaviour
             }
             else
             {
-
+                
             }
 
 
@@ -418,9 +437,15 @@ public class LevelGeneration : MonoBehaviour
             actualGameObject.transform.position = new Vector3(element.Position.x + 2, 1, element.Position.y + 2);*/
 
         }
+        foreach (WayPoint element in corridorsWaypoints)
+        {
+            GameObject actualGameObject = Instantiate(wayPoint);
+            actualGameObject.transform.parent = gameObject.transform;
+            actualGameObject.transform.position = new Vector3(element.Position.x, 1, element.Position.y);
+        }
 
-        GameObject actualPlayer = Instantiate(player, new Vector3(1, 0.75f, 1), Quaternion.identity);
-        actualPlayer.transform.parent = gameObject.transform;
+        /*GameObject actualPlayer = Instantiate(player, new Vector3(1, 0.75f, 1), Quaternion.identity);
+        actualPlayer.transform.parent = gameObject.transform;*/
         /*foreach (Corridor element in corridors)
         {
             GameObject actualGameObject = Instantiate(corridorObject);
@@ -439,6 +464,8 @@ public class LevelGeneration : MonoBehaviour
         mainSquares.Add(new SquareRoom(new Vector2(map.x, random), new Vector2(0, 0)));//Magic numbers
         mainSquares.Add(new SquareRoom(new Vector2(map.x, map.y - random), new Vector2(mainSquares[0].Position.x, mainSquares[0].Position.y + random + corridorDifference)));
         corridors.Add(new Corridor(new Vector2(map.x + corridorDifference, corridorDifference), new Vector2(mainSquares[0].Position.x, random)));
+        corridorsWaypoints.Add(new WayPoint(new Vector2(mainSquares[0].Position.x + wayPointCorrection, random + wayPointCorrection + corridorDifference)));
+        corridorsWaypoints.Add(new WayPoint(new Vector2(mainSquares[0].Position.x + map.x - wayPointCorrection + corridorDifference * 3, random +  wayPointCorrection  + corridorDifference)));
     }
 
 
@@ -464,7 +491,23 @@ public class LevelGeneration : MonoBehaviour
             quadriSquares.Add(new SquareRoom(new Vector2(random, element.Size.y), new Vector2(element.Position.x, element.Position.y)));
             quadriSquares.Add(new SquareRoom(new Vector2(element.Size.x - random, element.Size.y), new Vector2(element.Position.x + random + corridorDifference, element.Position.y)));
             corridors.Add(new Corridor(new Vector2(corridorDifference, element.Size.y), new Vector2(element.Position.x + random, element.Position.y)));
+
+            corridorsWaypoints.Add(new WayPoint(new Vector2(random + wayPointCorrection + corridorDifference, element.Position.y + wayPointCorrection)));
+            corridorsWaypoints.Add(new WayPoint(new Vector2(random + wayPointCorrection + corridorDifference, element.Position.y  + element.Size.y + wayPointCorrection + corridorDifference)));
         }
+        //Check if 1 waypoint == another
+        WayPoint wayPointToRemove = null;
+        foreach (WayPoint element1 in corridorsWaypoints)
+        {
+            foreach (WayPoint element2 in corridorsWaypoints)
+            {
+                if(((int)element1.Position.x == (int)element2.Position.x) && ((int)element1.Position.y == (int)element1.Position.y))
+                {
+                    //corridorsWaypoints.Remove(element2);
+                }
+            }
+        }
+        corridorsWaypoints.Remove(wayPointToRemove);
     }
 
     //STEP 3.5: Add corridors to corners
