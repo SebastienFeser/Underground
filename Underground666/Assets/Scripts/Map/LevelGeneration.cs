@@ -7,6 +7,8 @@ public class LevelGeneration : MonoBehaviour
 
     int cellMapSize = 36;
     int positionCorrection = 2;
+    float wayPointDoorCenterCorrection = 0.5f;
+    float wayPointDoorCorridorCorrection = 1.5f;
 
     enum CellType       //Cells represent each square of size (1,1) of the map
     {
@@ -501,9 +503,9 @@ public class LevelGeneration : MonoBehaviour
         {
             foreach (WayPoint element2 in corridorsWaypoints)
             {
-                if(((int)element1.Position.x == (int)element2.Position.x) && ((int)element1.Position.y == (int)element1.Position.y))
+                if(((int)element1.Position.x == (int)element2.Position.x) && ((int)element1.Position.y == (int)element2.Position.y) && (element1 != element2))
                 {
-                    //corridorsWaypoints.Remove(element2);
+                    wayPointToRemove = element2;
                 }
             }
         }
@@ -517,6 +519,11 @@ public class LevelGeneration : MonoBehaviour
         corridors.Add(new Corridor(new Vector2(corridorDifference, map.x + corridorDifference * 3), new Vector2(map.x + corridorDifference, 0 - corridorDifference)));
         corridors.Add(new Corridor(new Vector2(map.x + corridorDifference, corridorDifference), new Vector2(0, 0 - corridorDifference)));
         corridors.Add(new Corridor(new Vector2(map.x + corridorDifference, corridorDifference), new Vector2(0, map.y + corridorDifference)));
+
+        corridorsWaypoints.Add(new WayPoint(new Vector2(wayPointCorrection, wayPointCorrection)));
+        corridorsWaypoints.Add(new WayPoint(new Vector2(corridorDifference * 3 - wayPointCorrection + map.x, wayPointCorrection)));
+        corridorsWaypoints.Add(new WayPoint(new Vector2(wayPointCorrection, corridorDifference * 3 - wayPointCorrection + map.y)));
+        corridorsWaypoints.Add(new WayPoint(new Vector2(corridorDifference * 3 - wayPointCorrection + map.x, corridorDifference * 3 - wayPointCorrection + map.y)));
     }
 
     //STEP 4: Cut the QUADRI SQUARES horizontally or vertically to form the NORMAL SQUARES, there must be at least 6 lines away from the sides of the QUADRI SQUARES
@@ -786,18 +793,21 @@ public class LevelGeneration : MonoBehaviour
                 {
                     int newRandom = Random.Range(1, (int)rooms[i].Size.y - 1);
                     cell[(int)rooms[i].Position.x + positionCorrection, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_LEFT);
+                    corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection - wayPointDoorCorridorCorrection, (int)rooms[i].Position.y + newRandom + positionCorrection + wayPointDoorCenterCorrection)));
                     //cell[(int)rooms[i].Position.x + positionCorrection - 1, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection - 1, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_RIGHT);
                 }
                 else if(random == RoomPosition.SOUTH)
                 {
                     int newRandom = Random.Range(1, (int)rooms[i].Size.y - 1);
                     cell[(int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x - 1, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x - 1, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_RIGHT);
+                    corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection - wayPointDoorCenterCorrection  + wayPointDoorCorridorCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + newRandom)));
                     //cell[(int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_LEFT);
                 }
                 else if(random == RoomPosition.EAST)
                 {
                     int newRandom = Random.Range(1, (int)rooms[i].Size.x - 1);
                     cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y - 1] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y - 1), CellType.DOOR_DOWN);
+                    corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorCorridorCorrection + (int)rooms[i].Size.y - 1)));
                     //cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y), CellType.DOOR_UP);
 
                 }
@@ -805,6 +815,7 @@ public class LevelGeneration : MonoBehaviour
                 {
                     int newRandom = Random.Range(1, (int)rooms[i].Size.x - 1);
                     cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection), CellType.DOOR_UP);
+                    corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection - wayPointDoorCorridorCorrection)));
                     //cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection - 1] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection - 1), CellType.DOOR_DOWN);
                 }
 
