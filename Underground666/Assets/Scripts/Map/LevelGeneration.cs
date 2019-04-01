@@ -291,6 +291,14 @@ public class LevelGeneration : MonoBehaviour
         {
             StartCoroutine("BuildMap");
         }
+
+        foreach (WayPoint element in corridorsWaypoints)
+        {
+            Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.back * 20);
+            Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.forward * 20);
+            Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.left * 20);
+            Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.right * 20);
+        }
     }
 
     IEnumerator BuildMap()
@@ -457,7 +465,7 @@ public class LevelGeneration : MonoBehaviour
         {
             GameObject actualGameObject = Instantiate(wayPoint);
             actualGameObject.transform.parent = gameObject.transform;
-            actualGameObject.transform.position = new Vector3(element.Position.x, 1, element.Position.y);
+            actualGameObject.transform.position = new Vector3(element.Position.x, 1.2f, element.Position.y);
         }
 
         /*GameObject actualPlayer = Instantiate(player, new Vector3(1, 0.75f, 1), Quaternion.identity);
@@ -961,6 +969,8 @@ public class LevelGeneration : MonoBehaviour
     }
 
     //STEP 8: Spawn player and enemy position
+
+    //STEP 1: Detect
 
 }
 

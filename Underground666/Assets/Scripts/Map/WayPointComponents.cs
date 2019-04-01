@@ -23,7 +23,7 @@ public class WayPointComponents : MonoBehaviour
 
     private void Start()
     {
-        wayPointLayer = gameObject.GetComponent<LayerMask>();
+        //wayPointLayer = gameObject.GetComponent<LayerMask>();
     }
 
     //STEP 1: check the nearest waypoints in Corridors
