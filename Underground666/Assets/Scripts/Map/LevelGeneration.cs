@@ -71,7 +71,7 @@ public class LevelGeneration : MonoBehaviour
     [SerializeField] GameObject wayPoint;
 
 
-    class WayPoint
+    public class WayPoint
     {
         public WayPoint(Vector2 positionConstruct)
         {
@@ -83,7 +83,15 @@ public class LevelGeneration : MonoBehaviour
             get { return position; }
             set { position = value; }
         }
+
+        public List<WayPoint> NearWayPoints
+        {
+            get { return nearWayPoints; }
+            set { nearWayPoints = value; }
+        }
+
         Vector2 position;
+        List<WayPoint> nearWayPoints = new List<WayPoint>();
     }
 
     class Cell
@@ -265,6 +273,12 @@ public class LevelGeneration : MonoBehaviour
     int wayPointCorrection = 1;
 
     bool canSpace = true;
+
+    public List<WayPoint> CorridorWaypoints
+    {
+        get { return corridorsWaypoints; }
+        set { corridorsWaypoints = value; }
+    }
 
     private void Start()
     {
@@ -947,6 +961,7 @@ public class LevelGeneration : MonoBehaviour
     }
 
     //STEP 8: Spawn player and enemy position
+
 }
 
 
