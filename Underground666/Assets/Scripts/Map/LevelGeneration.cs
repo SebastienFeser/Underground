@@ -10,6 +10,8 @@ public class LevelGeneration : MonoBehaviour
     float wayPointDoorCenterCorrection = 0.5f;
     float wayPointDoorCorridorCorrection = 1.5f;
 
+    float rayDetectionLength = Mathf.Infinity;
+
     enum CellType       //Cells represent each square of size (1,1) of the map
     {
         NORMAL,
@@ -267,6 +269,7 @@ public class LevelGeneration : MonoBehaviour
     List<SquareRoom> rooms = new List<SquareRoom>();
     List<Corridor> corridors = new List<Corridor>();
     List<WayPoint> corridorsWaypoints = new List<WayPoint>();
+    List<GameObject> corridorWaypointsGameobjects = new List<GameObject>();
     [SerializeField] GameObject cube;
     [SerializeField] GameObject corridorObject;
     int corridorDifference = 2;
@@ -314,6 +317,7 @@ public class LevelGeneration : MonoBehaviour
         rooms.Clear();
         corridors.Clear();
         corridorsWaypoints.Clear();
+        corridorWaypointsGameobjects.Clear();
         for (int i = 0; i < cellMapSize; i++)
         {
             for (int j = 0; j < cellMapSize; j++)
@@ -325,8 +329,6 @@ public class LevelGeneration : MonoBehaviour
         CutMainSquares();
         AddCorridorsAround();
         yield return new WaitForSeconds(0.5f);
-        Debug.Log(mainSquares[0].Position);
-        Debug.Log(mainSquares[1].Size);
         CutQuadriSquares();
         CutNormalSquares();
         TransfromRoomsInCells();
@@ -334,14 +336,6 @@ public class LevelGeneration : MonoBehaviour
         SpawnDoorsInSmallRoom();
         SpawnDoorsLinkedToCorridor();
         SpawnWindows();
-        foreach(SquareRoom element in normalSquares)
-        {
-            Debug.Log(element.Position);
-            Debug.Log(element.IsRoomNorth);
-            Debug.Log(element.IsRoomSouth);
-            Debug.Log(element.IsRoomEast);
-            Debug.Log(element.IsRoomWest);
-        }
         foreach (Cell element in cell)
         {
             if (element.Type == CellType.CORNER_RIGHT_UP)
@@ -453,31 +447,19 @@ public class LevelGeneration : MonoBehaviour
             {
                 
             }
-
-
-            /*GameObject actualGameObject = Instantiate(cube);
-            actualGameObject.transform.parent = gameObject.transform;
-            actualGameObject.transform.localScale = new Vector3(element.Size.x, 1, element.Size.y);
-            actualGameObject.transform.position = new Vector3(element.Position.x + 2, 1, element.Position.y + 2);*/
+            
 
         }
         foreach (WayPoint element in corridorsWaypoints)
         {
             GameObject actualGameObject = Instantiate(wayPoint);
+            actualGameObject.GetComponent<WayPointComponents>().ObjectWaypoint = element;
             actualGameObject.transform.parent = gameObject.transform;
             actualGameObject.transform.position = new Vector3(element.Position.x, 1.2f, element.Position.y);
+            corridorWaypointsGameobjects.Add(actualGameObject);
         }
-
-        /*GameObject actualPlayer = Instantiate(player, new Vector3(1, 0.75f, 1), Quaternion.identity);
-        actualPlayer.transform.parent = gameObject.transform;*/
-        /*foreach (Corridor element in corridors)
-        {
-            GameObject actualGameObject = Instantiate(corridorObject);
-            actualGameObject.transform.parent = gameObject.transform;
-            actualGameObject.transform.localScale = new Vector3(element.Size.x, 1, element.Size.y);
-            actualGameObject.transform.position = new Vector3(element.Position.x + 2, 0, element.Position.y + 2);
-
-        }*/
+        CorridorNearWayPointDetection();
+        
         canSpace = true;
     }
 
@@ -967,10 +949,64 @@ public class LevelGeneration : MonoBehaviour
             }
         }
     }
+                                                                //Way Points
+    //STEP 1: Detect the nearest waypoint for each corridor waypoints
 
-    //STEP 8: Spawn player and enemy position
+    void CorridorNearWayPointDetection()
+    {
+        foreach(GameObject element in corridorWaypointsGameobjects)
+        {
+            //Il y a une cinquantaine d'éléments dans corridorWaypoints
+            Ray leftRay = new Ray(element.transform.position, Vector3.left);
+            Ray rightRay = new Ray(element.transform.position, Vector3.right);
+            Ray backRay = new Ray(element.transform.position, Vector3.back);
+            Ray forwardRay = new Ray(element.transform.position, Vector3.forward);
+            if (GetNearWayPoint(leftRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(leftRay));
+            }
+            if (GetNearWayPoint(rightRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(rightRay));
+            }
+            if (GetNearWayPoint(backRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(backRay));
+            }
+            if (GetNearWayPoint(forwardRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(forwardRay));
+            }
+        }
+    }
 
-    //STEP 1: Detect
+    GameObject GetNearWayPoint(Ray ray)
+    {
+        RaycastHit[] hits;
+        GameObject nearWayPoint = null;
+        //Chaque Ray s'instensie où il faut, j'ai testé avec un Debug.DrawRay
+        hits = Physics.RaycastAll(ray, Mathf.Infinity);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 10f);
+        
+            //Chacun de ces object a un sphere collider trigger
+            foreach (RaycastHit hit in hits)
+            {
+            Debug.Log(hit.transform.name);
+            float hitDistance = 32f;
+            if (hit.collider.tag == "WayPoint")
+                {
+                Debug.Log(hit.transform.name);
+                if (hit.distance < 32f)
+                {
+                    nearWayPoint = hit.collider.gameObject;
+                    hitDistance = hit.distance;
+                 }
+                }
+            }
+        
+        return nearWayPoint;
+        
+    }
 
 }
 

@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class WayPointComponents : MonoBehaviour
 {
-    [SerializeField] private LevelGeneration.WayPoint objectWaypoint;
+    private LevelGeneration.WayPoint objectWaypoint;
+    [SerializeField] private Vector2 positionInspector;
+    List<GameObject> nearWayPoints = new List<GameObject>();
+    [SerializeField] List<Vector2> nearWaypointsInspector = new List<Vector2>();
+
+    private void Update()
+    {
+        
+        foreach (GameObject element in nearWayPoints)
+        {
+            nearWaypointsInspector.Add(element.transform.position);
+        }
+        positionInspector = objectWaypoint.Position;
+        
+    }
 
     public LevelGeneration.WayPoint ObjectWaypoint
     {
@@ -12,37 +26,11 @@ public class WayPointComponents : MonoBehaviour
         set { objectWaypoint = value; }
     }
 
-    List<LevelGeneration.WayPoint> wayPointsToCheck;
-
-    public List<LevelGeneration.WayPoint> WayPointsToCheck
+    public List<GameObject> NearWayPoints
     {
-        get { return wayPointsToCheck; }
-        set { wayPointsToCheck = value; }
+        get { return nearWayPoints; }
+        set { nearWayPoints = value; }
     }
-    LayerMask wayPointLayer;
-
-    private void Start()
-    {
-        //wayPointLayer = gameObject.GetComponent<LayerMask>();
-    }
-
-    //STEP 1: check the nearest waypoints in Corridors
-    void CheckNearWaypointsInCorridor()
-    {
-        foreach (LevelGeneration.WayPoint element in wayPointsToCheck)
-        {
-
-        }
-    }
-
-    void CheckPosition(LevelGeneration.WayPoint element, Vector3 direction)
-    {
-        //Ray ray = new Ray(element.Position, direction);
-        RaycastHit hit;
-        if (Physics.Raycast(element.Position, direction, out hit, Mathf.Infinity, wayPointLayer))
-        {
-            element.NearWayPoints.Add(hit.collider.gameObject.GetComponent<WayPointComponents>().ObjectWaypoint);
-        }
-    }
-
 }
+
+

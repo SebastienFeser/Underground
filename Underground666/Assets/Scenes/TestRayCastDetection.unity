@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.05674095, g: 0.060943983, b: 0.06935006, a: 1}
+  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -112,7 +112,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &944866985
+--- !u!1 &921116268
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,90 +120,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 944866987}
-  - component: {fileID: 944866986}
-  m_Layer: 0
-  m_Name: ProceduralGeneration
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &944866986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944866985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23fd8db77001fd74b818483a012f59c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalCell: {fileID: 8086251799854484668, guid: 4bc8784d3f3f3934781f39c8da28153c,
-    type: 3}
-  cornerCell: {fileID: 4218152163495059688, guid: b3cc644bf88bcda4ba0dd24b4f48a036,
-    type: 3}
-  normalSmallestCell: {fileID: 1928591483056468752, guid: c2b6f3b241c9e17498bc564f7391f400,
-    type: 3}
-  doorCell: {fileID: 6811480158748693169, guid: cab715613ec9c5b45bacf5953cc8fd5a,
-    type: 3}
-  windowsEnd: {fileID: 8304764116757910926, guid: 777f4d006584111429890866b06b26b8,
-    type: 3}
-  windows: {fileID: 4467319257631078369, guid: 370037e2f14ae83458d4f45505699c9e, type: 3}
-  wallUp: {fileID: 1153444744572006491, guid: 1cdaf03f1c7ff28419ed44f3ef815b5f, type: 3}
-  wallDown: {fileID: 7256668182309310295, guid: 7fcf5db7b7d29894ab9f9a558c275e86,
-    type: 3}
-  wallLeft: {fileID: 7822844874846346466, guid: 8927630faf995d04db5fe71085138e36,
-    type: 3}
-  wallRight: {fileID: 7250127559238789110, guid: 65d8b6e91f097194b951673ea077c1f5,
-    type: 3}
-  cornerLeftUp: {fileID: 7119006355009068686, guid: 2f2837c8ccfc48f4e8bc4021d5103327,
-    type: 3}
-  cornerLeftDown: {fileID: 408563878629104803, guid: 25081c4c2f3198546a7fbb0d5294d3f2,
-    type: 3}
-  cornerRightUp: {fileID: 874352608890462988, guid: efad00a37adbc1a4ca900bec89280d3d,
-    type: 3}
-  cornerRightDown: {fileID: 7603067338103635934, guid: 53e7e156914ad84499d4373a67902a00,
-    type: 3}
-  doorUp: {fileID: 5601071042332989697, guid: 1ddfffe9e78a43d43a0a7a334f0af29d, type: 3}
-  doorDown: {fileID: 6187133078239834228, guid: 12d5867329fdaf3438d3badcfe0c6254,
-    type: 3}
-  doorLeft: {fileID: 8373575750470673742, guid: 342d08caa4f3416409eb74062db74f35,
-    type: 3}
-  doorRight: {fileID: 817218251043714866, guid: 72b4853041af1814b97ef505ef9f61f3,
-    type: 3}
-  player: {fileID: 6035857902547166526, guid: 0a8e8b2f0ce6c5e458107e2f863d1da0, type: 3}
-  wayPoint: {fileID: 633495368984477092, guid: 4f821eb6e94a5ce4bb11b9d82bd25ce0, type: 3}
-  cube: {fileID: 2935141590078682392, guid: 0ddb21d63a1054a4ab60dd5307527906, type: 3}
-  corridorObject: {fileID: 5131651178611286287, guid: 40e7d630d5ed98d41bf65a901a29d8bd,
-    type: 3}
---- !u!4 &944866987
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944866985}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1222545028
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1222545031}
-  - component: {fileID: 1222545030}
-  - component: {fileID: 1222545029}
+  - component: {fileID: 921116271}
+  - component: {fileID: 921116270}
+  - component: {fileID: 921116269}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -211,21 +130,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1222545029
+--- !u!81 &921116269
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1222545028}
+  m_GameObject: {fileID: 921116268}
   m_Enabled: 1
---- !u!20 &1222545030
+--- !u!20 &921116270
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1222545028}
+  m_GameObject: {fileID: 921116268}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -261,21 +180,21 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1222545031
+--- !u!4 &921116271
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1222545028}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 16, y: 40, z: 18}
+  m_GameObject: {fileID: 921116268}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
---- !u!1 &1822937873
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1075875533
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,8 +202,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1822937875}
-  - component: {fileID: 1822937874}
+  - component: {fileID: 1075875535}
+  - component: {fileID: 1075875534}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -292,23 +211,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &1822937874
+--- !u!108 &1075875534
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822937873}
+  m_GameObject: {fileID: 1075875533}
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -330,17 +249,17 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!4 &1822937875
+--- !u!4 &1075875535
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822937873}
+  m_GameObject: {fileID: 1075875533}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 34.225327, y: 8.710892, z: 36.634483}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
