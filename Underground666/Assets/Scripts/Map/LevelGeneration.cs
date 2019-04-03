@@ -9,6 +9,7 @@ public class LevelGeneration : MonoBehaviour
     int positionCorrection = 2;
     float wayPointDoorCenterCorrection = 0.5f;
     float wayPointDoorCorridorCorrection = 1.5f;
+    float wayPointDoorRoomCorrection = 0.5f;
 
     float rayDetectionLength = Mathf.Infinity;
 
@@ -70,7 +71,8 @@ public class LevelGeneration : MonoBehaviour
     [SerializeField] GameObject doorLeft;
     [SerializeField] GameObject doorRight;
     [SerializeField] GameObject player;
-    [SerializeField] GameObject wayPoint;
+    [SerializeField] GameObject wayPointCorridor;
+    [SerializeField] GameObject wayPointRoom;
 
 
     public class WayPoint
@@ -242,20 +244,7 @@ public class LevelGeneration : MonoBehaviour
 
     }
 
-    /*class FinalRoom     //Each room has two door
-    {
-        public FinalRoom(SquareRoom room)
-        {
-            //for (int i = 0; i <)
-        }
-
-        List<Cell[,]> roomcells = new List<Cell[,]>();
-    }*/
-
-    class RoomBlock     //Are 4 and contain 3 rooms each
-    {
-
-    }
+    
 
 
 
@@ -303,13 +292,13 @@ public class LevelGeneration : MonoBehaviour
             StartCoroutine("BuildMap");
         }
 
-        foreach (WayPoint element in corridorsWaypoints)
+        /*foreach (WayPoint element in corridorsWaypoints)
         {
             Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.back * 20);
             Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.forward * 20);
             Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.left * 20);
             Debug.DrawRay(new Vector3 (element.Position.x, 1.2f, element.Position.y), Vector3.right * 20);
-        }
+        }*/
     }
 
     IEnumerator BuildMap()
@@ -462,7 +451,7 @@ public class LevelGeneration : MonoBehaviour
         }
         foreach (WayPoint element in corridorsWaypoints)
         {
-            GameObject actualGameObject = Instantiate(wayPoint);
+            GameObject actualGameObject = Instantiate(wayPointCorridor);
             actualGameObject.GetComponent<WayPointComponents>().ObjectWaypoint = element;
             actualGameObject.transform.parent = gameObject.transform;
             actualGameObject.transform.position = new Vector3(element.Position.x, 1.2f, element.Position.y);
@@ -470,7 +459,7 @@ public class LevelGeneration : MonoBehaviour
         }
         foreach (WayPoint element in roomWaypoints)
         {
-            GameObject actualGameObject = Instantiate(wayPoint);
+            GameObject actualGameObject = Instantiate(wayPointRoom);
             actualGameObject.GetComponent<WayPointComponents>().ObjectWaypoint = element;
             actualGameObject.transform.parent = gameObject.transform;
             actualGameObject.transform.position = new Vector3(element.Position.x, 1.2f, element.Position.y);
@@ -780,6 +769,9 @@ public class LevelGeneration : MonoBehaviour
                     int random = Random.Range(1, (int)element.Size.x - 1);
                     cell[(int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection] = new Cell(new Vector2((int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection), CellType.DOOR_UP);
                     cell[(int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection - 1] = new Cell(new Vector2((int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection - 1), CellType.DOOR_DOWN);
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + random + wayPointDoorCenterCorrection, (int)element.Position.y + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorRoomCorrection)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + random + wayPointDoorCenterCorrection, (int)element.Position.y + positionCorrection - 1 + wayPointDoorCenterCorrection - wayPointDoorRoomCorrection)));
+
 
                 }
                 if (element.IsRoomEast)
@@ -787,18 +779,28 @@ public class LevelGeneration : MonoBehaviour
                     int random = Random.Range(1, (int)element.Size.x - 1);
                     cell[(int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection + (int)element.Size.y - 1] = new Cell(new Vector2((int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection + (int)element.Size.y - 1), CellType.DOOR_DOWN);
                     cell[(int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection + (int)element.Size.y] = new Cell(new Vector2((int)element.Position.x + positionCorrection + random, (int)element.Position.y + positionCorrection + (int)element.Size.y), CellType.DOOR_UP);
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + random + wayPointDoorCenterCorrection, (int)element.Position.y + positionCorrection + (int)element.Size.y - 1 + wayPointDoorCenterCorrection - wayPointDoorRoomCorrection)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + random + wayPointDoorCenterCorrection, (int)element.Position.y + positionCorrection + (int)element.Size.y + wayPointDoorCenterCorrection + wayPointDoorRoomCorrection)));
+
                 }
                 if (element.IsRoomNorth)
                 {
                     int random = Random.Range(1, (int)element.Size.y - 1);
                     cell[(int)element.Position.x + positionCorrection, (int)element.Position.y + positionCorrection + random] = new Cell(new Vector2((int)element.Position.x + positionCorrection, (int)element.Position.y + positionCorrection + random), CellType.DOOR_LEFT);
                     cell[(int)element.Position.x + positionCorrection - 1, (int)element.Position.y + positionCorrection + random] = new Cell(new Vector2((int)element.Position.x + positionCorrection - 1, (int)element.Position.y + positionCorrection + random), CellType.DOOR_RIGHT);
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorRoomCorrection, (int)element.Position.y + positionCorrection + random + wayPointDoorCenterCorrection)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection - 1 + wayPointDoorCenterCorrection - wayPointDoorRoomCorrection, (int)element.Position.y + positionCorrection + random + wayPointDoorCenterCorrection)));
+
+
                 }
                 if (element.IsRoomSouth)
                 {
                     int random = Random.Range(1, (int)element.Size.y - 1);
                     cell[(int)element.Position.x + positionCorrection + (int)element.Size.x - 1, (int)element.Position.y + positionCorrection + random] = new Cell(new Vector2((int)element.Position.x + positionCorrection + (int)element.Size.x - 1, (int)element.Position.y + positionCorrection + random), CellType.DOOR_RIGHT);
                     cell[(int)element.Position.x + positionCorrection + (int)element.Size.x, (int)element.Position.y + positionCorrection + random] = new Cell(new Vector2((int)element.Position.x + positionCorrection + (int)element.Size.x, (int)element.Position.y + positionCorrection + random), CellType.DOOR_LEFT);
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + (int)element.Size.x - 1 + wayPointDoorCenterCorrection - wayPointDoorRoomCorrection, (int)element.Position.y + positionCorrection + random + wayPointDoorCenterCorrection)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)element.Position.x + positionCorrection + (int)element.Size.x + wayPointDoorCenterCorrection + wayPointDoorRoomCorrection, (int)element.Position.y + positionCorrection + random + wayPointDoorCenterCorrection)));
+
                 }
             }
         }
@@ -811,6 +813,8 @@ public class LevelGeneration : MonoBehaviour
         {
             if (!rooms[i].IsTheSmallest && !rooms[i].IsUnCutRoom)
             {
+                GameObject corridorWaypoint;
+                GameObject roomWaypoint;
                 RoomPosition random = RandomiseDoorPosition(rooms[i].IsRoomNorth, rooms[i].IsRoomSouth, rooms[i].IsRoomEast, rooms[i].IsRoomWest);
                 if (random == RoomPosition.NORTH)
                 {
@@ -818,7 +822,7 @@ public class LevelGeneration : MonoBehaviour
                     cell[(int)rooms[i].Position.x + positionCorrection, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_LEFT);
 
                     corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection - wayPointDoorCorridorCorrection, (int)rooms[i].Position.y + newRandom + positionCorrection + wayPointDoorCenterCorrection)));
-                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorCorridorCorrection, (int)rooms[i].Position.y + newRandom + positionCorrection + wayPointDoorCenterCorrection)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorRoomCorrection, (int)rooms[i].Position.y + newRandom + positionCorrection + wayPointDoorCenterCorrection)));
 
                     //cell[(int)rooms[i].Position.x + positionCorrection - 1, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection - 1, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_RIGHT);
                 }
@@ -828,7 +832,7 @@ public class LevelGeneration : MonoBehaviour
                     cell[(int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x - 1, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x - 1, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_RIGHT);
 
                     corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection - wayPointDoorCenterCorrection  + wayPointDoorCorridorCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + newRandom)));
-                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection - wayPointDoorCenterCorrection - wayPointDoorCorridorCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + newRandom)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection - wayPointDoorCenterCorrection - wayPointDoorRoomCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + newRandom)));
 
                     //cell[(int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + newRandom] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + (int)rooms[i].Size.x, (int)rooms[i].Position.y + positionCorrection + newRandom), CellType.DOOR_LEFT);
                 }
@@ -838,7 +842,7 @@ public class LevelGeneration : MonoBehaviour
                     cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y - 1] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y - 1), CellType.DOOR_DOWN);
 
                     corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorCorridorCorrection + (int)rooms[i].Size.y - 1)));
-                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection - wayPointDoorCorridorCorrection + (int)rooms[i].Size.y - 1)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection - wayPointDoorRoomCorrection + (int)rooms[i].Size.y - 1)));
 
                     //cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + (int)rooms[i].Size.y), CellType.DOOR_UP);
 
@@ -849,7 +853,7 @@ public class LevelGeneration : MonoBehaviour
                     cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection), CellType.DOOR_UP);
 
                     corridorsWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection - wayPointDoorCorridorCorrection)));
-                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorCorridorCorrection)));
+                    roomWaypoints.Add(new WayPoint(new Vector2((int)rooms[i].Position.x + positionCorrection + wayPointDoorCenterCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection + wayPointDoorCenterCorrection + wayPointDoorRoomCorrection)));
 
                     //cell[(int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection - 1] = new Cell(new Vector2((int)rooms[i].Position.x + positionCorrection + newRandom, (int)rooms[i].Position.y + positionCorrection - 1), CellType.DOOR_DOWN);
                 }
@@ -859,7 +863,52 @@ public class LevelGeneration : MonoBehaviour
             {
                 if (!rooms[i - 1].IsTheSmallest)
                 {
-
+                    if (rooms[i].IsRoomNorth)
+                    {
+                        if (rooms[i - 1].Position.x > rooms[i].Position.x)
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.x - 1);
+                        }
+                        else
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.x - 1);
+                        }
+                    }
+                    else if (rooms[i].IsRoomSouth)
+                    {
+                        if (rooms[i - 1].Position.x > rooms[i].Position.x)
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.x - 1);
+                        }
+                        else
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.x - 1);
+                        }
+                    }
+                    else if (rooms[i].IsRoomEast)
+                    {
+                        if (rooms[i - 1].Position.y > rooms[i].Position.y)
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.y - 1);
+                        }
+                        else
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.y - 1);
+                        }
+                    }
+                    else if (rooms[i].IsRoomWest)
+                    {
+                        if (rooms[i - 1].Position.y > rooms[i].Position.y)
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.y - 1);
+                        }
+                        else
+                        {
+                            int random = Random.Range(1, (int)rooms[i - 2].Position.y - 1);
+                        }
+                    }
+                    //Step 1 Find where the small room is compared to the big room
+                    //Step 2 The room must have a higher or lower
                 }
                 else if (!rooms[i - 2].IsTheSmallest)
                 {
@@ -1022,16 +1071,19 @@ public class LevelGeneration : MonoBehaviour
         GameObject nearWayPoint = null;
         //Chaque Ray s'instensie où il faut, j'ai testé avec un Debug.DrawRay
         hits = Physics.RaycastAll(ray, Mathf.Infinity);
-        Debug.DrawRay(ray.origin, ray.direction, Color.red, 10f);
 
         float hitDistance = 32f;
 
         //Chacun de ces object a un sphere collider trigger
         foreach (RaycastHit hit in hits)
             {
-            if (hit.collider.tag == "WayPoint")
+            if (hit.collider.tag == "Wall")
+            {
+                break;
+            }
+            if (hit.collider.tag == "WayPointCorridor")
                 {
-                if (hit.distance < hitDistance /*&& hit.distance > 0.9f*/)
+                if (hit.distance < hitDistance)
                 {
 
                     //Debug.Log(hit.transform.name);
@@ -1045,6 +1097,39 @@ public class LevelGeneration : MonoBehaviour
         
     }
     //STEP 2: Detect the nearest Waypoints in each room
+
+    void RoomNearWayPointDetection()
+    {
+        foreach (GameObject element in roomWaypointsGameobjects)
+        {
+            //Il y a une cinquantaine d'éléments dans corridorWaypoints
+            Ray leftRay = new Ray(element.transform.position, Vector3.left);
+            Ray rightRay = new Ray(element.transform.position, Vector3.right);
+            Ray backRay = new Ray(element.transform.position, Vector3.back);
+            Ray forwardRay = new Ray(element.transform.position, Vector3.forward);
+            if (GetNearWayPoint(leftRay) != null)
+            {
+                Debug.Log("test");
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(leftRay));
+                element.GetComponent<WayPointComponents>().NearWayPointsInspector.Add(GetNearWayPoint(leftRay).transform.position);
+            }
+            if (GetNearWayPoint(rightRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(rightRay));
+                element.GetComponent<WayPointComponents>().NearWayPointsInspector.Add(GetNearWayPoint(rightRay).transform.position);
+            }
+            if (GetNearWayPoint(backRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(backRay));
+                element.GetComponent<WayPointComponents>().NearWayPointsInspector.Add(GetNearWayPoint(backRay).transform.position);
+            }
+            if (GetNearWayPoint(forwardRay) != null)
+            {
+                element.GetComponent<WayPointComponents>().NearWayPoints.Add(GetNearWayPoint(forwardRay));
+                element.GetComponent<WayPointComponents>().NearWayPointsInspector.Add(GetNearWayPoint(forwardRay).transform.position);
+            }
+        }
+    }
 
 
 }

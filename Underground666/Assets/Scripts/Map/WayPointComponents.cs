@@ -9,16 +9,38 @@ public class WayPointComponents : MonoBehaviour
     List<GameObject> nearWayPoints = new List<GameObject>();
     [SerializeField] List<Vector3> nearWaypointsInspector = new List<Vector3>();
 
-    /*private void Update()
+    public class WayPoint
+    {
+        public WayPoint(Vector2 positionConstruct)
+        {
+            position = positionConstruct;
+        }
+
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
+        public List<WayPoint> NearWayPoints
+        {
+            get { return nearWayPoints; }
+            set { nearWayPoints = value; }
+        }
+
+        Vector2 position;
+        List<WayPoint> nearWayPoints = new List<WayPoint>();
+    }
+
+    private void Update()
     {
         
         foreach (GameObject element in nearWayPoints)
         {
-            nearWaypointsInspector.Add(element.transform.position);
+            Debug.DrawLine(transform.position, element.transform.position, Color.black);
         }
-        positionInspector = objectWaypoint.Position;
         
-    }*/
+    }
 
     public LevelGeneration.WayPoint ObjectWaypoint
     {

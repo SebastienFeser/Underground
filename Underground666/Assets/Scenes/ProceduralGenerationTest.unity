@@ -175,7 +175,10 @@ MonoBehaviour:
   doorRight: {fileID: 817218251043714866, guid: 72b4853041af1814b97ef505ef9f61f3,
     type: 3}
   player: {fileID: 6035857902547166526, guid: 0a8e8b2f0ce6c5e458107e2f863d1da0, type: 3}
-  wayPoint: {fileID: 633495368984477092, guid: 4f821eb6e94a5ce4bb11b9d82bd25ce0, type: 3}
+  wayPointCorridor: {fileID: 633495368984477092, guid: 4f821eb6e94a5ce4bb11b9d82bd25ce0,
+    type: 3}
+  wayPointRoom: {fileID: 3706368426402772847, guid: 76dde88c15c4b7342a6687277af80f22,
+    type: 3}
   cube: {fileID: 2935141590078682392, guid: 0ddb21d63a1054a4ab60dd5307527906, type: 3}
   corridorObject: {fileID: 5131651178611286287, guid: 40e7d630d5ed98d41bf65a901a29d8bd,
     type: 3}
