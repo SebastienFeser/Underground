@@ -6,7 +6,7 @@ public class WayPointComponents : MonoBehaviour
 {
     private LevelGeneration.WayPoint objectWaypoint;
     [SerializeField] private Vector2 positionInspector;
-    List<GameObject> nearWayPoints = new List<GameObject>();
+    [SerializeField] List<GameObject> nearWayPoints = new List<GameObject>();
     [SerializeField] List<Vector3> nearWaypointsInspector = new List<Vector3>();
 
     public class WayPoint
