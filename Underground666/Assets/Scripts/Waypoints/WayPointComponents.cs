@@ -59,6 +59,8 @@ public class WayPointComponents : MonoBehaviour
         get { return nearWaypointsInspector; }
         set { nearWaypointsInspector = value; }
     }
+
+    //Calculate
 }
 
 
