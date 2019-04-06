@@ -27,6 +27,8 @@ public class MapGeneraion : MonoBehaviour
         private List<RoomsPosition> whereAreRooms = new List<RoomsPosition>();
         private RoomType type = RoomType.DEFAULT;
         private List<SquareRoom> roomChildren = new List<SquareRoom>();
+        private bool wasCutHorizontal;
+        private bool isTheBiggest;
 
         public Vector2 Position
         {
@@ -55,10 +57,28 @@ public class MapGeneraion : MonoBehaviour
             set { roomChildren = value; }
         }
 
+        public bool WasCutHorizontal
+        {
+            get { return wasCutHorizontal; }
+        }
+
+        public bool IsTheBiggest
+        {
+            get { return isTheBiggest; }
+        }
+
         public SquareRoom(Vector2 sizeConstruct, Vector2 positionConstruct)
         {
             size = sizeConstruct;
             position = positionConstruct;
+        }
+
+        public SquareRoom(Vector2 sizeConstruct, Vector2 positionConstruct, bool wasCutHorizontalConstruct, bool isTheBiggestConstruct)
+        {
+            size = sizeConstruct;
+            position = positionConstruct;
+            wasCutHorizontal = wasCutHorizontalConstruct;
+            isTheBiggest = isTheBiggestConstruct;
         }
 
         public SquareRoom(Vector2 sizeConstruct, Vector2 positionConstruct, RoomType typeConstruct, List<RoomsPosition> whereAreRoomsConstruct)
@@ -92,9 +112,14 @@ public class MapGeneraion : MonoBehaviour
             position = positionConstruct;
         }
     }
+
+    public class Cell
+    {
+
+    }
     #endregion
 
-    #region LISTS SQUAREROOMS & CORRIDORS
+    #region LISTS SQUAREROOMS, CORRIDORS, CELLS
     private SquareRoom mapSquare = new SquareRoom(new Vector2(30, 30), new Vector2(0, 0));
     private List<SquareRoom> mapSquareCut = new List<SquareRoom>();
     private List<SquareRoom> quadriSquares = new List<SquareRoom>();
@@ -107,10 +132,20 @@ public class MapGeneraion : MonoBehaviour
     int corridorSize = 2;
     #endregion
 
+    #region BSP
     List<SquareRoom> CutSquareRoom(int randomMin, int randomMax, SquareRoom squareToCut, bool cutVertical, bool isCorridor)
     {
         List<SquareRoom> cutSquareRoom = new List<SquareRoom>();
         int random = Random.Range(randomMin, randomMax);
+        bool isTheBiggest;
+        if (random - randomMin < randomMax - random)
+        {
+            isTheBiggest = false;
+        }
+        else
+        {
+            isTheBiggest = true;
+        }
         int corridorBetweenSize = 0;
         if (isCorridor)
         {
@@ -118,8 +153,8 @@ public class MapGeneraion : MonoBehaviour
         }
         if (cutVertical)
         {
-            cutSquareRoom.Add(new SquareRoom(new Vector2(random, squareToCut.Size.y), new Vector2(squareToCut.Position.x, squareToCut.Position.y)));
-            cutSquareRoom.Add(new SquareRoom(new Vector2(squareToCut.Size.x - random, squareToCut.Size.y), new Vector2(squareToCut.Position.x + random + corridorBetweenSize, squareToCut.Position.y)));
+            cutSquareRoom.Add(new SquareRoom(new Vector2(random, squareToCut.Size.y), new Vector2(squareToCut.Position.x, squareToCut.Position.y), false, isTheBiggest));
+            cutSquareRoom.Add(new SquareRoom(new Vector2(squareToCut.Size.x - random, squareToCut.Size.y), new Vector2(squareToCut.Position.x + random + corridorBetweenSize, squareToCut.Position.y), false, !isTheBiggest));
             if (isCorridor)
             {
                 corridors.Add(new Corridor(new Vector2(corridorSize, squareToCut.Size.y), new Vector2(squareToCut.Position.x + random, squareToCut.Position.y)));
@@ -127,8 +162,8 @@ public class MapGeneraion : MonoBehaviour
         }
         else
         {
-            cutSquareRoom.Add(new SquareRoom(new Vector2(squareToCut.Size.x, random), new Vector2(squareToCut.Position.x, squareToCut.Position.y)));
-            cutSquareRoom.Add(new SquareRoom(new Vector2(squareToCut.Size.x, squareToCut.Size.y - random), new Vector2(squareToCut.Position.x, squareToCut.Position.y + random + corridorBetweenSize)));
+            cutSquareRoom.Add(new SquareRoom(new Vector2(squareToCut.Size.x, random), new Vector2(squareToCut.Position.x, squareToCut.Position.y), true, isTheBiggest));
+            cutSquareRoom.Add(new SquareRoom(new Vector2(squareToCut.Size.x, squareToCut.Size.y - random), new Vector2(squareToCut.Position.x, squareToCut.Position.y + random + corridorBetweenSize), true, !isTheBiggest));
             if (isCorridor)
             {
                 corridors.Add(new Corridor(new Vector2(squareToCut.Size.x, corridorSize), new Vector2(squareToCut.Position.x, squareToCut.Position.y + random)));
@@ -176,4 +211,47 @@ public class MapGeneraion : MonoBehaviour
     }
 
     // STEP 5: Cut the biggest NORMAL SQUARE in each QUADRISQUARE
+    void CutNormalSquares()
+    {
+        foreach (SquareRoom element in quadriSquaresCut)
+        {
+            if (element.IsTheBiggest)
+            {
+                if (element.WasCutHorizontal)
+                {
+                    rooms.AddRange(CutSquareRoom(6, (int)element.Size.x - 6, element, true, false));
+                }
+                else
+                {
+                    rooms.AddRange(CutSquareRoom(6, (int)element.Size.y - 6, element, false, false));
+                }
+            }
+            else
+            {
+                rooms.Add(element);
+            }
+        }
+    }
+
+    void AddNormalSquaresToQuadriSquares()
+    {
+        int i = 0;
+        foreach (SquareRoom element in quadriSquaresCut)
+        {
+            List<SquareRoom> elementList = new List<SquareRoom>();
+            elementList.Add(rooms[i]);
+            elementList.Add(rooms[i + 1]);
+            elementList.Add(rooms[i + 2]);
+            element.RoomChildren = elementList;
+            i += 3;
+        }
+    }
+    #endregion
+
+    #region OBJECTS PLACEMENT
+
+
+
+
+    #endregion
 }
