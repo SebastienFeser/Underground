@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] float enemySpeed;
-    [SerializeField] float enemyRunSpeedMultiplayer;
-    [SerializeField] float enemyWalkSpeedMultiplayer;
-    List<GameObject> waypoints = new List<GameObject>();
-    // Start is called before the first frame update
-
-    [SerializeField] List<GameObject> roomWaypoints = new List<GameObject>();
-
-    public List<GameObject> RoomWaypoints
+    [SerializeField] PathFinding pathfinding;
+    [SerializeField] WaypointMoving enemyWaypointMoving;
+    [SerializeField] List<GameObject> WayPointPath;
+    public enum Behaviour
     {
-        get { return roomWaypoints; }
-        set { roomWaypoints = value; }
+        PATROLLING,
+        RUNNING,
+        SEARCHING,
+        FIND_PATROL_PATH
     }
 
-    void Start()
+    //Patrolling
+
+    private void FixedUpdate()
     {
-        waypoints = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().waypoints;
+        enemyWaypointMoving.ForFixedUpdate();
+        CalculatePathfinding();
+    }
+    //Running
+    void CalculatePathfinding()
+    {
+        WayPointPath = pathfinding.AddToList();
     }
 
-    //Patrol
 
-    void Patrol()
-    {
-        foreach(GameObject element in waypoints)
-        {
-            
-        }
-    }
+
 }

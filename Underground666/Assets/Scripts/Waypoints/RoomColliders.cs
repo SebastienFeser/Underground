@@ -19,51 +19,19 @@ public class RoomColliders : MonoBehaviour
 
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            playerIsInside = true;
-            other.GetComponent<PlayerWaypoint>().NearWaypoints.Clear();
-            //other.GetComponent<PlayerWaypoint>().RoomWaypoints.Clear();
-            other.GetComponent<PlayerWaypoint>().RoomWaypoints = roomWaypoints;
-        }
-        else
-        {
-            playerIsInside = false;
-        }
-
-        if (other.tag == "Enemy")
-        {
-            enemyIsInside = true;
-            other.GetComponent<Enemy>().RoomWaypoints.Clear();
-            other.GetComponent<Enemy>().RoomWaypoints = roomWaypoints;
-        }
-        else
-        {
-            enemyIsInside = false;
-        }
-    }
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" || other.tag == "Enemy")
         {
-            other.GetComponent<PlayerWaypoint>().IsInARoom = true;
-        }
-
-        if (other.tag == "Enemy")
-        {
+            other.GetComponent<WaypointMoving>().IsInARoom = true;
+            other.GetComponent<WaypointMoving>().RoomWaypoints = roomWaypoints;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" || other.tag == "Enemy")
         {
-           other.GetComponent<PlayerWaypoint>().IsInARoom = false;
-        }
-
-        if (other.tag == "Enemy")
-        {
+           other.GetComponent<WaypointMoving>().IsInARoom = false;
         }
     }
 }

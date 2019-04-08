@@ -8,6 +8,7 @@ TagManager:
   - WayPointRoom
   - Wall
   - GameManager
+  - Enemy
   layers:
   - Default
   - TransparentFX
