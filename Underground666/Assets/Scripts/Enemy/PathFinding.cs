@@ -31,6 +31,7 @@ public class PathFinding : MonoBehaviour
         public float Cost
         {
             get { return cost; }
+            set { cost = value; }
         }
 
         public Waypoint Parent
@@ -70,12 +71,21 @@ public class PathFinding : MonoBehaviour
         enemyWaypoint = new Waypoint(enemy, enemy, player);
     }
 
-    Waypoint CalculateOptimalWaypoint(List<Waypoint> listToCalculate, Waypoint parent)
+    Waypoint CalculateOptimalWaypoint(List<Waypoint> listToCalculate, Waypoint parent, List<Waypoint> elementsToBan)
     {
-        Waypoint optimalWaypoint = listToCalculate[0];
+        Waypoint optimalWaypoint = new Waypoint(listToCalculate[0].WaypointGameobject, enemy, player);
+        optimalWaypoint.Cost = 100000000000f;
         foreach(Waypoint element in listToCalculate)
         {
-            if (element.Cost < optimalWaypoint.Cost)
+            bool calculate = true;
+            foreach (Waypoint element2 in elementsToBan)
+            {
+                if (element.WaypointGameobject == element2.WaypointGameobject)
+                {
+                    calculate = false;
+                }
+            }
+            if (element.Cost < optimalWaypoint.Cost && calculate)
             {
                 optimalWaypoint = element;
             }
@@ -95,23 +105,43 @@ public class PathFinding : MonoBehaviour
             openList.Add(new Waypoint(element, enemy, player, enemyWaypoint));
         }
         bool pathIsDone = false;
-        Waypoint actualwaypoint = CalculateOptimalWaypoint(openList, enemyWaypoint);
+        Waypoint actualwaypoint = CalculateOptimalWaypoint(openList, enemyWaypoint, closedList);
+        int i = 0;
         while (!pathIsDone)
         {
             closedList.Add(new Waypoint(actualwaypoint.WaypointGameobject, enemy, player));
-            foreach(GameObject element in actualwaypoint.WaypointGameobject.GetComponent<WayPointComponents>().NearWayPoints)
-            {
-                openList.Add(new Waypoint(element, enemy, player, actualwaypoint));
-            }
-            if (actualwaypoint.WaypointGameobject.tag == "Player")
+            if (actualwaypoint.WaypointGameobject.tag == "Player" || i > 10)
             {
                 pathIsDone = true;
             }
             else
             {
-                actualwaypoint = CalculateOptimalWaypoint(openList, actualwaypoint);
+                foreach (GameObject element in actualwaypoint.WaypointGameobject.GetComponent<WayPointComponents>().NearWayPoints)
+                {
+                    Debug.Log(element.name);
+                    bool canAdd = true;
+                    foreach(Waypoint element2 in closedList)
+                    {
+                        if (element2.WaypointGameobject == element)
+                        {
+                            canAdd = false;
+                        }
+                    }
+                    foreach(Waypoint element2 in openList)
+                    {
+                        if (element2.WaypointGameobject == element)
+                        {
+                            canAdd = false;
+                        }
+                    }
+                    if (canAdd == true)
+                    {
+                        openList.Add(new Waypoint(element, enemy, player, actualwaypoint));
+                    }
+                }
+                actualwaypoint = CalculateOptimalWaypoint(openList, actualwaypoint, closedList);
             }
-
+            i++;
         }
         finalList = GeneratePath(actualwaypoint);
         return finalList;
@@ -122,9 +152,10 @@ public class PathFinding : MonoBehaviour
         bool listCompleted = false;
         List<GameObject> path = new List<GameObject>();
         Waypoint actualWaypoint = endpath;
+        int i = 0;
         while (!listCompleted)
         {
-            if (actualWaypoint.WaypointGameobject.tag == "Enemy")
+            if (actualWaypoint.WaypointGameobject.tag == "Enemy" || i > 10)
             {
                 listCompleted = true;
             }
@@ -133,6 +164,7 @@ public class PathFinding : MonoBehaviour
                 path.Add(actualWaypoint.WaypointGameobject);
                 actualWaypoint = actualWaypoint.Parent;
             }
+            i++;
         }
         return path;
     }

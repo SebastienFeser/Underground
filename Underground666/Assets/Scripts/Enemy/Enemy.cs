@@ -14,20 +14,27 @@ public class Enemy : MonoBehaviour
         SEARCHING,
         FIND_PATROL_PATH
     }
+    bool afterStart = true;
 
     //Patrolling
+    private void Start()
+    {
+    }
 
     private void FixedUpdate()
     {
         enemyWaypointMoving.ForFixedUpdate();
-        CalculatePathfinding();
+        if (afterStart)
+        {
+            CalculatePathfinding();
+            afterStart = false;
+        }
     }
+
     //Running
     void CalculatePathfinding()
     {
         WayPointPath = pathfinding.AddToList();
     }
-
-
 
 }

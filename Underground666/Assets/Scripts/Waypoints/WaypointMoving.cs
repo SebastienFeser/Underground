@@ -75,10 +75,15 @@ public class WaypointMoving : MonoBehaviour
                     {
                         break;
                     }
-                    else if (hit.collider.tag == "WayPointRoom" || hit.collider.tag == "WayPointCorridor" || hit.collider.tag == waypointEnemyOrPlayer.tag)
+                    else if (hit.collider.tag == "WayPointRoom" || hit.collider.tag == "WayPointCorridor")
                     {
                         nearWaypoints.Add(hit.collider.gameObject);
                         hit.collider.gameObject.GetComponent<WayPointComponents>().NearWayPoints.Add(gameObject);
+                    }
+                    else if (hit.collider.tag == waypointEnemyOrPlayer.tag)
+                    {
+                        nearWaypoints.Add(hit.collider.gameObject);
+                        hit.collider.gameObject.GetComponent<WaypointMoving>().NearWaypoints.Add(gameObject);
                     }
                 }
             }
