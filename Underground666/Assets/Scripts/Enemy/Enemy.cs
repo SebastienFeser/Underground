@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
         FIND_PATROL_PATH
     }
     bool afterStart = true;
+    bool afterFrame = false;
 
     //Patrolling
     private void Start()
@@ -24,9 +25,14 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         enemyWaypointMoving.ForFixedUpdate();
-        if (afterStart)
+        if (afterFrame)
         {
             CalculatePathfinding();
+            afterFrame = false;
+        }
+        if(afterStart)
+        {
+            afterFrame = true;
             afterStart = false;
         }
     }

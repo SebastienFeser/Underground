@@ -57,6 +57,8 @@ public class PathFinding : MonoBehaviour
     List<GameObject> finalList = new List<GameObject>();
     GameObject enemy;
     GameObject player;
+    [SerializeField] GameObject enemyWaypointObject;
+    [SerializeField] GameObject playerWaypointObject;
     [SerializeField] WaypointMoving enemyWaypointScript;
     WaypointMoving playerWaypointScript;
     Waypoint enemyWaypoint;
@@ -96,14 +98,12 @@ public class PathFinding : MonoBehaviour
 
     public List<GameObject> AddToList()
     {
-        foreach (GameObject element in allWaypointGameObject)
-        {
-            allWaypoint.Add(new Waypoint(element, enemy, player));
-        }
+        enemyWaypoint = (new Waypoint(enemyWaypointObject, enemy, player));
         foreach (GameObject element in enemyWaypointScript.NearWaypoints)
         {
             openList.Add(new Waypoint(element, enemy, player, enemyWaypoint));
         }
+        closedList.Add(enemyWaypoint);
         bool pathIsDone = false;
         Waypoint actualwaypoint = CalculateOptimalWaypoint(openList, enemyWaypoint, closedList);
         int i = 0;
@@ -116,9 +116,10 @@ public class PathFinding : MonoBehaviour
             }
             else
             {
+                Debug.Log(actualwaypoint.WaypointGameobject.name);
                 foreach (GameObject element in actualwaypoint.WaypointGameobject.GetComponent<WayPointComponents>().NearWayPoints)
                 {
-                    Debug.Log(element.name);
+                    //Debug.Log(element.name);
                     bool canAdd = true;
                     foreach(Waypoint element2 in closedList)
                     {
@@ -140,6 +141,19 @@ public class PathFinding : MonoBehaviour
                     }
                 }
                 actualwaypoint = CalculateOptimalWaypoint(openList, actualwaypoint, closedList);
+                Debug.Log("Beguin check closed");
+                foreach (Waypoint element in closedList)
+                {
+                    Debug.Log(element.WaypointGameobject.name);
+                }
+                Debug.Log("endcheck");
+                Debug.Log("Beguin check open");
+                foreach (Waypoint element in openList)
+                {
+                    Debug.Log(element.WaypointGameobject.name);
+                }
+                Debug.Log("endcheck");
+
             }
             i++;
         }
