@@ -39,7 +39,7 @@ public class WaypointMoving : MonoBehaviour
     }
 
 
-    public void ForFixedUpdate()
+    private void FixedUpdate()
     {
         {
 
