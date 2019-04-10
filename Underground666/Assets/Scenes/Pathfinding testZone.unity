@@ -1808,7 +1808,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1222615701
 PrefabInstance:
@@ -2213,7 +2213,6 @@ GameObject:
   - component: {fileID: 1540277286}
   - component: {fileID: 1540277285}
   - component: {fileID: 1540277289}
-  - component: {fileID: 1540277288}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -2293,18 +2292,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540277283}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1540277288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540277283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08df4e62ab429ca44929cc8188999bd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1540277289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2446,7 +2433,7 @@ Transform:
   - {fileID: 144700546}
   - {fileID: 1525776755}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1620558401
 MonoBehaviour:
@@ -2494,7 +2481,7 @@ Transform:
   - {fileID: 399874252}
   - {fileID: 956998657}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1775268050
 GameObject:

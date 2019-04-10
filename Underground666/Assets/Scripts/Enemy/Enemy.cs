@@ -25,11 +25,9 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //enemyWaypointMoving.ForFixedUpdate();
         if (afterFrame)
         {
             CalculatePathfinding();
-            afterFrame = false;
         }
         if(afterStart)
         {

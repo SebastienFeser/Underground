@@ -52,8 +52,6 @@ public class WaypointMoving : MonoBehaviour
             {
                 roomElementDeleteBool = true;
                 waypointsToCalculate = roomWaypoints;
-                Debug.Log("lol1");
-                Debug.Log(roomWaypoints);
             }
             else
             {
@@ -62,7 +60,6 @@ public class WaypointMoving : MonoBehaviour
                     roomElementDeleteBool = false;
                 }
                 waypointsToCalculate = corridorWaypoints;
-                Debug.Log("lol2");
             }
             waypointsToCalculate.Add(waypointEnemyOrPlayer);
 
