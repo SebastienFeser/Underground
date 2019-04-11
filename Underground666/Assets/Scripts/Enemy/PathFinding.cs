@@ -51,7 +51,6 @@ public class PathFinding : MonoBehaviour
         float cost;
     }
 
-    [SerializeField] List<GameObject> allWaypointGameObject = new List<GameObject>();
     List<Waypoint> closedList = new List<Waypoint>(); //List where the waypoints already passed
     List<Waypoint> openList = new List<Waypoint>(); //List of the accessible waypoints
     List<GameObject> finalList = new List<GameObject>();
@@ -141,14 +140,14 @@ public class PathFinding : MonoBehaviour
                     }
                 }
                 //Debug.Log("exit while");
-                actualwaypoint = CalculateOptimalWaypoint(openList, closedList); //erreur ici
+                actualwaypoint = CalculateOptimalWaypoint(openList, closedList);
                 /*Debug.Log("Beguin check closed");
                 foreach (Waypoint element in closedList)
                 {
                     Debug.Log(element.WaypointGameobject.name);
                 }
-                Debug.Log("endcheck");
-                Debug.Log("Beguin check open");
+                Debug.Log("endcheck");*/
+                /*Debug.Log("Beguin check open");
                 foreach (Waypoint element in openList)
                 {
                     Debug.Log(element.WaypointGameobject.name);

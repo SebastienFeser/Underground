@@ -1379,6 +1379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 953556111}
   - component: {fileID: 953556113}
+  - component: {fileID: 953556112}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1401,6 +1402,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &953556112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953556110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccee402edb921834fb03c67f1be64eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyWaypointMoving: {fileID: 1540277289}
 --- !u!54 &953556113
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2196,7 +2210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c93f81c34b730b54e89a49346690f131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allWaypointGameObject: []
   enemyWaypointObject: {fileID: 1937395935}
   playerWaypointObject: {fileID: 953556110}
   enemyWaypointScript: {fileID: 1937395941}

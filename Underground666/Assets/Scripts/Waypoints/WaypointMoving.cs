@@ -39,7 +39,7 @@ public class WaypointMoving : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
+    public void ForFixedUpdate()
     {
         {
 
@@ -48,6 +48,7 @@ public class WaypointMoving : MonoBehaviour
                 Debug.DrawLine(transform.position, element.transform.position, Color.black);
             }
             nearWaypoints.Clear();
+            waypointsToCalculate.Clear();
             if (isInARoom)
             {
                 roomElementDeleteBool = true;
