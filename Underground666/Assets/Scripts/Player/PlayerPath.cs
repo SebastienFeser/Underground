@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerPath : MonoBehaviour
 {
 
-    [SerializeField] WaypointMoving enemyWaypointMoving;
+    [SerializeField] WaypointMoving playerWaypointMoving;
 
     private void FixedUpdate()
     {
-        enemyWaypointMoving.ForFixedUpdate();
+        playerWaypointMoving.UpdateWaypointDetection();
     }
 }

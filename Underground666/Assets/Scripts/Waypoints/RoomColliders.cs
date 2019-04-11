@@ -31,7 +31,7 @@ public class RoomColliders : MonoBehaviour
     {
         if (other.tag == "Player" || other.tag == "Enemy")
         {
-           other.GetComponent<WaypointMoving>().IsInARoom = false;
+            other.GetComponent<WaypointMoving>().IsInARoom = false;
         }
     }
 }

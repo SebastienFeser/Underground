@@ -107,12 +107,13 @@ public class PathFinding : MonoBehaviour
         closedList.Add(enemyWaypoint);
         bool pathIsDone = false;
         Waypoint actualwaypoint = CalculateOptimalWaypoint(openList, closedList);
-        int i = 0;
-        while (!pathIsDone)
+        int failSafe = 0;
+        while (!pathIsDone && failSafe++ < 500)
         {
             closedList.Add(actualwaypoint);
-            if (actualwaypoint.WaypointGameobject.tag == "Player" || i > 10)
+            if (actualwaypoint.WaypointGameobject.tag == "Player")
             {
+                //Debug.Log(actualwaypoint.Parent);
                 pathIsDone = true;
             }
             else
@@ -155,7 +156,10 @@ public class PathFinding : MonoBehaviour
                 Debug.Log("endcheck");*/
 
             }
-            i++;
+        }
+        if (failSafe >= 500)
+        {
+            Debug.LogError("failSafe out of range");
         }
         finalList = GeneratePath(actualwaypoint);
         return finalList;
@@ -167,11 +171,12 @@ public class PathFinding : MonoBehaviour
         bool listCompleted = false;
         List<GameObject> path = new List<GameObject>();
         Waypoint actualWaypoint = endpath;
-        int i = 0;
-        while (!listCompleted)
+        int failSafe = 0;
+        while (!listCompleted && failSafe++ < 500)
         {
-
-            if (actualWaypoint.WaypointGameobject.tag == "Enemy" || i > 100)
+            //Debug.Log(actualWaypoint.Parent.WaypointGameobject.name);
+            //Debug.Log(actualWaypoint.WaypointGameobject);
+            if (actualWaypoint.WaypointGameobject.tag == "Enemy")
             {
                 listCompleted = true;
             }
@@ -181,7 +186,10 @@ public class PathFinding : MonoBehaviour
                 //Debug.Log(actualWaypoint.Parent.WaypointGameobject.name + "is the Parent of" + actualWaypoint.WaypointGameobject.name);
                 actualWaypoint = actualWaypoint.Parent;
             }
-            i++;
+        }
+        if (failSafe >= 500)
+        {
+            Debug.LogError("failSafe out of range");
         }
         foreach (GameObject element in path)
         {

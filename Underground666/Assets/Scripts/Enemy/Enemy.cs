@@ -20,22 +20,21 @@ public class Enemy : MonoBehaviour
     //Patrolling
     private void Start()
     {
-
     }
 
     private void FixedUpdate()
     {
-        enemyWaypointMoving.ForFixedUpdate();
-        if (afterFrame)
+        if(afterFrame)
         {
-            
             CalculatePathfinding();
         }
-        if(afterStart)
+        enemyWaypointMoving.UpdateWaypointDetection();
+        if (afterStart)
         {
             afterFrame = true;
             afterStart = false;
         }
+        
     }
 
     //Running
