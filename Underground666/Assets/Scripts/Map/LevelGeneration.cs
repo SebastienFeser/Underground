@@ -482,20 +482,6 @@ public class LevelGeneration : MonoBehaviour
         corridorsWaypoints.Add(new WayPoint(new Vector2(mainSquares[0].Position.x + map.x - wayPointCorrection + corridorDifference * 3, random +  wayPointCorrection  + corridorDifference)));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //STEP 3: Cut the the MAIN SQUARES horizontally between line 12 and 18 to get the QUADRI SQUARES
     void CutMainSquares()
     {

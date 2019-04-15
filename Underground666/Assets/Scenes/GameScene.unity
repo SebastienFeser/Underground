@@ -326,10 +326,10 @@ MonoBehaviour:
     type: 3}
   corridorCell: {fileID: 5131651178611286287, guid: 40e7d630d5ed98d41bf65a901a29d8bd,
     type: 3}
-  player: {fileID: 6035857902547166526, guid: 0a8e8b2f0ce6c5e458107e2f863d1da0, type: 3}
-  wayPointCorridor: {fileID: 633495368984477092, guid: 4f821eb6e94a5ce4bb11b9d82bd25ce0,
+  playerGameObject: {fileID: 0}
+  wayPointCorridorGameObject: {fileID: 633495368984477092, guid: 4f821eb6e94a5ce4bb11b9d82bd25ce0,
     type: 3}
-  wayPointRoom: {fileID: 3706368426402772847, guid: 76dde88c15c4b7342a6687277af80f22,
+  wayPointRoomGameObject: {fileID: 3706368426402772847, guid: 76dde88c15c4b7342a6687277af80f22,
     type: 3}
 --- !u!4 &2039086289
 Transform:
