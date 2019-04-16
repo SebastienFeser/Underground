@@ -54,6 +54,7 @@ public class PathFinding : MonoBehaviour
     List<Waypoint> closedList = new List<Waypoint>(); //List where the waypoints already passed
     List<Waypoint> openList = new List<Waypoint>(); //List of the accessible waypoints
     List<GameObject> finalList = new List<GameObject>();
+    List<GameObject> finalListbackup = new List<GameObject>();
     GameObject enemy;
     GameObject player;
     [SerializeField] GameObject enemyWaypointObject;
@@ -96,6 +97,14 @@ public class PathFinding : MonoBehaviour
 
     public List<GameObject> AddToList()
     {
+        finalListbackup.Clear();
+        if (finalList != null)
+        {
+            foreach(GameObject element in finalList)
+            {
+                finalListbackup.Add(element);
+            }
+        }
         closedList.Clear();
         openList.Clear();
         finalList.Clear();
@@ -160,6 +169,12 @@ public class PathFinding : MonoBehaviour
         if (failSafe >= 500)
         {
             Debug.LogError("failSafe out of range");
+            finalList.Clear();
+            foreach (GameObject element in finalListbackup)
+            {
+                finalList.Add(element);
+                Debug.Log(element.name);
+            }
         }
         finalList = GeneratePath(actualwaypoint);
         return finalList;

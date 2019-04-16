@@ -26,8 +26,15 @@ public class MapGeneraion : MonoBehaviour
 
 
     [SerializeField] GameObject playerGameObject;
+    [SerializeField] GameObject enemyGameObject;
     [SerializeField] GameObject wayPointCorridorGameObject;
     [SerializeField] GameObject wayPointRoomGameObject;
+
+    [SerializeField] GameObject triggerRoom;
+
+    [SerializeField] GameObject pickupGameObject;
+
+    [SerializeField] GameObject preLoadedMap;
     #endregion
 
     #region CLASSES
@@ -55,6 +62,7 @@ public class MapGeneraion : MonoBehaviour
         private List<SquareRoom> roomChildren = new List<SquareRoom>();
         private bool wasCutHorizontal;
         private bool isTheBiggest;
+        private TriggerRoom triggerSquareRoom;
         private Cell[,] roomCells;
 
         public Vector2 Position
@@ -99,6 +107,12 @@ public class MapGeneraion : MonoBehaviour
         {
             size = sizeConstruct;
             position = positionConstruct;
+        }
+
+        public TriggerRoom TriggerSquareRoom
+        {
+            get { return triggerSquareRoom; }
+            set { triggerSquareRoom = value; }
         }
 
         public SquareRoom(Vector2 sizeConstruct, Vector2 positionConstruct, bool wasCutHorizontalConstruct, bool isTheBiggestConstruct)
@@ -146,7 +160,7 @@ public class MapGeneraion : MonoBehaviour
     {
         Vector2 position;
         List<Waypoint> nearWayPoints = new List<Waypoint>();
-        GameObject waypointGameObject = new GameObject();
+        GameObject waypointGameObject;
 
         public Waypoint(Vector2 positionConstruct, GameObject waypointGameObjectConstruct)
         {
@@ -170,6 +184,36 @@ public class MapGeneraion : MonoBehaviour
         {
             get { return waypointGameObject; }
             set { waypointGameObject = value; }
+        }
+    }
+
+    public class TriggerRoom
+    {
+        Vector2 size;
+        Vector2 position;
+        List<Waypoint> waypointsInRoom = new List<Waypoint>();
+
+        public TriggerRoom(Vector2 sizeConstruct, Vector2 positionConstruct)
+        {
+            size = sizeConstruct;
+            position = positionConstruct;
+        }
+
+        public Vector2 Size
+        {
+            get { return size; }
+        }
+
+        public Vector2 Position
+        {
+            get { return position; }
+
+        }
+
+        public List<Waypoint> WaypointsInRoom
+        {
+            get { return waypointsInRoom; }
+            set { waypointsInRoom = value; }
         }
     }
 
@@ -234,6 +278,9 @@ public class MapGeneraion : MonoBehaviour
     float wayPointDoorCenterCorrection = 0.5f;
     float wayPointDoorCorridorCorrection = 1.5f;
     float wayPointDoorRoomCorrection = 0.5f;
+
+    GameObject player;
+    GameObject enemy;
     #endregion
 
     #region LISTS SQUAREROOMS, CORRIDORS, CELLS
@@ -248,6 +295,7 @@ public class MapGeneraion : MonoBehaviour
     private List<Waypoint> roomWaypoints = new List<Waypoint>();
     private List<GameObject> corridorWaypointsGameObjects = new List<GameObject>();
     private List<GameObject> roomWaypointsGameObjects = new List<GameObject>();
+    private List<GameObject> triggerRoomGameObjects = new List<GameObject>();
     #endregion
 
     #region START, UPDATE, FIXED UPDATE
@@ -273,9 +321,24 @@ public class MapGeneraion : MonoBehaviour
         WayPointSpawn();
         yield return new WaitForEndOfFrame();
         Debug.Log("Done");
+        TriggerRoomsSpawn();
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Done");
         CorridorNearWayPointDetection();
         yield return new WaitForEndOfFrame();
-
+        Debug.Log("Done");
+        DetectWaypointsInEachRoom();
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Done");
+        LinkNearWaypointsFromEachRoom();
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Done");
+        SpawnPlayerAndEnemy();
+        ActivatePreLoadedMap();
+        yield return new WaitForEndOfFrame();
+        Debug.Log("GameStart");
+        //AddWaypointsToWaypointMoving();
+        yield return new WaitForEndOfFrame();
 
     }
 
@@ -303,6 +366,7 @@ public class MapGeneraion : MonoBehaviour
         AddNormalSquaresToQuadriSquares();
         AddCorridorsAround();
         CheckRoomPositions();
+        CreateTriggerRooms();
     }
     
     List<SquareRoom> CutSquareRoom(int randomMin, int randomMax, SquareRoom squareToCut, bool cutVertical, bool isCorridor)
@@ -581,6 +645,14 @@ public class MapGeneraion : MonoBehaviour
                     objectiveRoom.WhereAreRooms.Add(SquareRoom.RoomsPosition.NORTH);
                 }
             }
+        }
+    }
+
+    void CreateTriggerRooms()
+    {
+        foreach (SquareRoom element in rooms)
+        {
+            element.TriggerSquareRoom = new TriggerRoom(element.Size, element.Position);
         }
     }
     #endregion
@@ -937,13 +1009,13 @@ public class MapGeneraion : MonoBehaviour
     }
     void WayPointSpawn()
     {
-        GameObject actualWaypoint = new GameObject();
+        GameObject actualWaypoint;
         foreach (Waypoint element in corridorWaypoints)
         {
             //actualWaypoint = Instantiate(element.WaypointGameObject);
             actualWaypoint = element.WaypointGameObject;
             actualWaypoint.transform.parent = gameObject.transform;
-            actualWaypoint.transform.position = new Vector3(element.Position.x, 1, element.Position.y);
+            actualWaypoint.transform.position = new Vector3(element.Position.x, 2.5f, element.Position.y);
             foreach(Waypoint element2 in element.NearWayPoints)
             {
                 actualWaypoint.GetComponent<WayPointComponents>().NearWayPoints.Add(element2.WaypointGameObject);
@@ -956,14 +1028,47 @@ public class MapGeneraion : MonoBehaviour
             //actualWaypoint = Instantiate(element.WaypointGameObject);
             actualWaypoint = element.WaypointGameObject;
             actualWaypoint.transform.parent = gameObject.transform;
-            actualWaypoint.transform.position = new Vector3(element.Position.x, 1, element.Position.y);
+            actualWaypoint.transform.position = new Vector3(element.Position.x, 2.5f, element.Position.y);
             foreach (Waypoint element2 in element.NearWayPoints)
             {
                 actualWaypoint.GetComponent<WayPointComponents>().NearWayPoints.Add(element2.WaypointGameObject);
                 actualWaypoint.GetComponent<WayPointComponents>().NearWayPointsInspector.Add(element2.WaypointGameObject.transform.position);
             }
+            roomWaypointsGameObjects.Add(actualWaypoint);
         }
 
+    }
+    void TriggerRoomsSpawn()
+    {
+        GameObject actualTriggerRoom;
+        foreach (SquareRoom element in rooms)
+        {
+            actualTriggerRoom = Instantiate(triggerRoom);
+            actualTriggerRoom.transform.parent = gameObject.transform;
+            actualTriggerRoom.transform.position = new Vector3(element.TriggerSquareRoom.Position.x + corridorSize, 0, element.TriggerSquareRoom.Position.y + corridorSize);
+            actualTriggerRoom.transform.localScale = new Vector3(element.TriggerSquareRoom.Size.x, 3, element.TriggerSquareRoom.Size.y);
+            triggerRoomGameObjects.Add(actualTriggerRoom);
+        }
+    }
+    void SpawnPlayerAndEnemy()
+    {
+        player = Instantiate(playerGameObject);
+        player.transform.position = new Vector3(1, 0.5f, 1);
+
+        enemy = Instantiate(enemyGameObject);
+        enemy.transform.position = new Vector3(1, 0.5f, 35);
+        foreach (GameObject element in roomWaypointsGameObjects)
+        {
+            enemy.GetComponentInChildren<WaypointMoving>().RoomWaypoints.Add(element);
+            player.GetComponentInChildren<WaypointMoving>().RoomWaypoints.Add(element);
+        }
+        Debug.Log(enemy.name);
+        Debug.Log(player.name);
+        AddWaypointsToWaypointMoving();
+    }
+    void ActivatePreLoadedMap()
+    {
+        preLoadedMap.SetActive(true);
     }
     #endregion
 
@@ -1032,6 +1137,64 @@ public class MapGeneraion : MonoBehaviour
 
         return nearWayPoint;
 
+    }
+
+    void DetectWaypointsInEachRoom()
+    {
+        foreach (GameObject element in triggerRoomGameObjects)
+        {
+            RoomColliders actualTrigger = element.GetComponentInChildren<RoomColliders>();
+            foreach (GameObject element2 in roomWaypointsGameObjects)
+            {
+                if(element2.transform.position.x > element.transform.position.x && element2.transform.position.z > element.transform.position.z &&
+                    element2.transform.position.x < element.transform.position.x + element.transform.localScale.x && element2.transform.position.z < element.transform.position.z + element.transform.localScale.z)
+                {
+                    actualTrigger.RoomWaypoints.Add(element2);
+                }
+            }
+        }
+    }
+
+    void LinkNearWaypointsFromEachRoom()
+    {
+        foreach (GameObject element in triggerRoomGameObjects)
+        {
+            RoomColliders actualTrigger = element.GetComponentInChildren<RoomColliders>();
+            foreach (GameObject element2 in actualTrigger.RoomWaypoints)
+            {
+                foreach (GameObject element3 in actualTrigger.RoomWaypoints)
+                {
+                    if (element3 != element2)
+                    {
+                        element2.GetComponent<WayPointComponents>().NearWayPoints.Add(element3);
+                    }
+                }
+            }
+        }
+    }
+
+    void AddWaypointsToWaypointMoving()
+    {
+        WaypointMoving playerWaypointMoving = player.GetComponentInChildren<WaypointMoving>();
+        WaypointMoving enemyWaypointMoving = enemy.GetComponentInChildren<WaypointMoving>();
+
+        playerWaypointMoving.EnemyOrPlayer = enemy;
+        enemyWaypointMoving.EnemyOrPlayer = player;
+
+        foreach (GameObject element in corridorWaypointsGameObjects)
+        {
+            playerWaypointMoving.CorridorWaypoints.Add(element);
+            enemyWaypointMoving.CorridorWaypoints.Add(element);
+            WayPointComponents actualElementScript = element.GetComponent<WayPointComponents>();
+            playerWaypointMoving.AllWaypointComponents.Add(actualElementScript);
+            enemyWaypointMoving.AllWaypointComponents.Add(actualElementScript);
+        }
+        foreach (GameObject element in roomWaypointsGameObjects)
+        {
+            WayPointComponents actualElementScript = element.GetComponent<WayPointComponents>();
+            playerWaypointMoving.AllWaypointComponents.Add(actualElementScript);
+            enemyWaypointMoving.AllWaypointComponents.Add(actualElementScript);
+        }
     }
     #endregion
 }

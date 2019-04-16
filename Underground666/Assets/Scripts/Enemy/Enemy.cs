@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] PathFinding pathfinding;
     [SerializeField] WaypointMoving enemyWaypointMoving;
     [SerializeField] List<GameObject> WayPointPath;
+    [SerializeField] Rigidbody enemyRigidBody;
+    [SerializeField] float speed;
     public enum Behaviour
     {
         PATROLLING,
@@ -33,6 +35,10 @@ public class Enemy : MonoBehaviour
         {
             afterFrame = true;
             afterStart = false;
+        }
+        if (WayPointPath.Count > 0)
+        {
+            transform.position = Vector3.MoveTowards(new Vector3 (transform.position.x, transform.position.y, transform.position.z), new Vector3(WayPointPath[WayPointPath.Count - 1].transform.position.x, transform.position.y, WayPointPath[WayPointPath.Count - 1].transform.position.z), Time.deltaTime * speed);
         }
         
     }

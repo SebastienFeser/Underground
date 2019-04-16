@@ -11,9 +11,9 @@ public class WaypointMoving : MonoBehaviour
     [SerializeField] List<GameObject> nearWaypoints = new List<GameObject>();               //Waypoints that are visible to the actual static waypoint
     //List<GameObject> nearWaypointsBackup = new List<GameObject>();                        //Solution Temporaire
     [SerializeField] List<WayPointComponents> allWaypointComponents = new List<WayPointComponents>();
-    [SerializeField] GameObject waypointEnemyOrPlayer;
+    private GameObject waypointEnemyOrPlayer;
     List<Ray> rayToCastInRoom;
-    bool isInARoom;
+    //bool isInARoom;
     //bool roomElementDeleteBool = true;
 
     public List<GameObject> RoomWaypoints
@@ -22,11 +22,11 @@ public class WaypointMoving : MonoBehaviour
         set { roomWaypoints = value; }
     }
 
-    public bool IsInARoom
+    /*public bool IsInARoom
     {
         get { return isInARoom; }
         set { isInARoom = value; }
-    }
+    }*/
 
     public List<GameObject> NearWaypoints
     {
@@ -34,11 +34,28 @@ public class WaypointMoving : MonoBehaviour
         set { nearWaypoints = value; }
     }
 
+    public List<WayPointComponents> AllWaypointComponents
+    {
+        get { return allWaypointComponents; }
+        set { allWaypointComponents = value; }
+    }
+
+    public List<GameObject> CorridorWaypoints
+    {
+        get { return corridorWaypoints; }
+        set { corridorWaypoints = value; }
+    }
+
+    public GameObject EnemyOrPlayer
+    {
+        get { return this.waypointEnemyOrPlayer; }
+        set { this.waypointEnemyOrPlayer = value; }
+    }
 
     private void Start()
     {
-        corridorWaypoints = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().corridorWaypoints;
-        allWaypointComponents = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().allWaypointComponents;
+        //corridorWaypoints = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().corridorWaypoints;
+        //allWaypointComponents = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().allWaypointComponents;
     }
 
 
@@ -49,14 +66,14 @@ public class WaypointMoving : MonoBehaviour
         {
             Debug.DrawLine(transform.position, element.transform.position, Color.black);
         }
-        /*if (nearWaypoints.Count != 0)
+        if (nearWaypoints.Count != 0)
         {
-            nearWaypointsBackup.Clear();
+            /*nearWaypointsBackup.Clear();
             foreach (GameObject element in nearWaypoints)
             {
                 nearWaypointsBackup.Add(element);
-            }
-        }*/
+            }*/
+        }
         //Clear the lists
         nearWaypoints.Clear();
         waypointsToCalculate.Clear();
@@ -68,7 +85,7 @@ public class WaypointMoving : MonoBehaviour
         }
 
         //Selects all the Waypoints who's visibillity needs to be tested
-        if (isInARoom)      //Check if the dynamic waypoint is in a room
+        /*if (isInARoom)      //Check if the dynamic waypoint is in a room
         {
             //roomElementDeleteBool = true;
 
@@ -77,14 +94,18 @@ public class WaypointMoving : MonoBehaviour
             {
                 waypointsToCalculate.Add(element);
             }
-        }
-        else                //Check if not in a room, dynamic waypoint is in a corridor
+        }*/
+        //else                //Check if not in a room, dynamic waypoint is in a corridor
         {
             /*if (roomElementDeleteBool)
             {
                 roomElementDeleteBool = false;
             }*/
             foreach (GameObject element in corridorWaypoints)
+            {
+                waypointsToCalculate.Add(element);
+            }
+            foreach (GameObject element in roomWaypoints)
             {
                 waypointsToCalculate.Add(element);
             }
