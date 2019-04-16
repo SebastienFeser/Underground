@@ -128,7 +128,7 @@ public class WaypointMoving : MonoBehaviour
                 else if (hit.collider.tag == waypointEnemyOrPlayer.tag)                             //Check if it hits a dynamic Waypoint
                 {
                     nearWaypoints.Add(hit.collider.gameObject);
-                    hit.collider.gameObject.GetComponent<WaypointMoving>().NearWaypoints.Add(gameObject);       //Adding the actual dynamic Waypoint to the Dynamic Waypoint's Nearwaypoint list
+                    hit.collider.gameObject.GetComponentInChildren<WaypointMoving>().NearWaypoints.Add(gameObject);       //Adding the actual dynamic Waypoint to the Dynamic Waypoint's Nearwaypoint list
                 }
             }
         }

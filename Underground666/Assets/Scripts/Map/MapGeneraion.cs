@@ -35,6 +35,8 @@ public class MapGeneraion : MonoBehaviour
     [SerializeField] GameObject pickupGameObject;
 
     [SerializeField] GameObject preLoadedMap;
+
+    [SerializeField] AllMapsPickups allMapPickups;
     #endregion
 
     #region CLASSES
@@ -559,17 +561,7 @@ public class MapGeneraion : MonoBehaviour
 
             SetNearRoomForUnCutRoom(unCutRoom, normalRoom, objectiveRoom);
             SetNearRoomForNonUnCutRoom(unCutRoom, normalRoom, objectiveRoom);
-            foreach (SquareRoom element2 in element.RoomChildren)
-            {
-                if (element2.Type == SquareRoom.RoomType.OBJECTIVE_ROOM)
-                {
-                    Debug.Log(element2.Position);
-                    foreach(SquareRoom.RoomsPosition element3 in element2.WhereAreRooms)
-                    {
-                        Debug.Log(element3);
-                    }
-                }
-            }
+            
         }
 
         void SetNearRoomForUnCutRoom (SquareRoom unCutRoom, SquareRoom normalRoom, SquareRoom objectiveRoom)
@@ -718,7 +710,7 @@ public class MapGeneraion : MonoBehaviour
                         actualCell = cellMap[(int)element.Position.x + cellsPositionCorrection + i, (int)element.Position.y + cellsPositionCorrection + j] = new Cell(new Vector2((int)element.Position.x + cellsPositionCorrection + i, (int)element.Position.y + cellsPositionCorrection + j), CellType.NORMAL);
                     }
                     actualRoomList[i, j] = actualCell;
-                    Debug.Log(actualCell.Type);
+                    //Debug.Log(actualCell.Type);
                 }
             }
             
@@ -1069,6 +1061,17 @@ public class MapGeneraion : MonoBehaviour
     void ActivatePreLoadedMap()
     {
         preLoadedMap.SetActive(true);
+    }
+    void CreateObjective()
+    {
+        foreach (SquareRoom element in rooms)
+        {
+            if (element.Type == SquareRoom.RoomType.OBJECTIVE_ROOM)
+            {
+                int random1 = Random.Range((int)element.Position.x + corridorSize + 2, (int)element.Position.x + corridorSize + (int)element.Size.x - 2);
+                int random2; Random.Range((int)element.Position.y + corridorSize + 2, (int)element.Position.y + corridorSize + (int)element.Size.y - 2);
+            }
+        }
     }
     #endregion
 
