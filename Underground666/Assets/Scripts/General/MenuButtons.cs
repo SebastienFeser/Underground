@@ -14,6 +14,7 @@ public class MenuButtons : MonoBehaviour
     private void UnLockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void PlayGame()

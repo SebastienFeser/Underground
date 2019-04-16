@@ -8,7 +8,6 @@ public class Pickups : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            GameObject.FindGameObjectWithTag("AllPickups").GetComponent<AllMapsPickups>();
             Destroy(gameObject);
         }
     }

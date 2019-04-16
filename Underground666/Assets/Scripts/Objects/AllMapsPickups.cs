@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AllMapsPickups : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class AllMapsPickups : MonoBehaviour
         get { return pickupPosition; }
         set { pickupPosition = value; }
     }
+
+    public bool InstantiatePickup1
+    {
+        get { return instantiatePickup1; }
+        set { instantiatePickup1 = value; }
+    }
     
 
 
@@ -39,7 +46,7 @@ public class AllMapsPickups : MonoBehaviour
             if (pickup1 == null)
             {
                 pickup2 = Instantiate(pickupGameObject);
-                pickup1.transform.position = new Vector3(pickupPosition[1].x, 0, pickupPosition[1].y);
+                pickup2.transform.position = new Vector3(pickupPosition[1].x, 0, pickupPosition[1].y);
                 instantiatePickup2 = false;
                 instantiatePickup3 = true;
             }
@@ -50,7 +57,7 @@ public class AllMapsPickups : MonoBehaviour
             if (pickup2 == null)
             {
                 pickup3 = Instantiate(pickupGameObject);
-                pickup1.transform.position = new Vector3(pickupPosition[2].x, 0, pickupPosition[2].y);
+                pickup3.transform.position = new Vector3(pickupPosition[2].x, 0, pickupPosition[2].y);
                 instantiatePickup3 = false;
                 instantiatePickup4 = true;
             }
@@ -61,8 +68,9 @@ public class AllMapsPickups : MonoBehaviour
             if (pickup3 == null)
             {
                 pickup4 = Instantiate(pickupGameObject);
-                pickup1.transform.position = new Vector3(pickupPosition[3].x, 0, pickupPosition[3].y);
+                pickup4.transform.position = new Vector3(pickupPosition[3].x, 0, pickupPosition[3].y);
                 instantiatePickup4 = false;
+                victory = true;
             }
         }
 
@@ -70,7 +78,7 @@ public class AllMapsPickups : MonoBehaviour
         {
             if (pickup4 == null)
             {
-                Debug.Log("GG EZ");
+                SceneManager.LoadScene("Victory");
             }
         }
 

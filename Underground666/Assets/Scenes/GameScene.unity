@@ -6115,6 +6115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82999d879ac8fb9499e88685b6ac9484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupGameObject: {fileID: 6312484302410239997, guid: dfd672faa57a98f4286e5b62e4ca6321,
+    type: 3}
 --- !u!1001 &955547512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11648,6 +11650,7 @@ MonoBehaviour:
     type: 3}
   pickupGameObject: {fileID: 0}
   preLoadedMap: {fileID: 1177632167}
+  allMapPickups: {fileID: 942517501}
 --- !u!4 &2039086289
 Transform:
   m_ObjectHideFlags: 0

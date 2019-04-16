@@ -337,6 +337,7 @@ public class MapGeneraion : MonoBehaviour
         Debug.Log("Done");
         SpawnPlayerAndEnemy();
         ActivatePreLoadedMap();
+        CreateObjective();
         yield return new WaitForEndOfFrame();
         Debug.Log("GameStart");
         //AddWaypointsToWaypointMoving();
@@ -1069,9 +1070,11 @@ public class MapGeneraion : MonoBehaviour
             if (element.Type == SquareRoom.RoomType.OBJECTIVE_ROOM)
             {
                 int random1 = Random.Range((int)element.Position.x + corridorSize + 2, (int)element.Position.x + corridorSize + (int)element.Size.x - 2);
-                int random2; Random.Range((int)element.Position.y + corridorSize + 2, (int)element.Position.y + corridorSize + (int)element.Size.y - 2);
+                int random2 = Random.Range((int)element.Position.y + corridorSize + 2, (int)element.Position.y + corridorSize + (int)element.Size.y - 2);
+                allMapPickups.PickupPosition.Add(new Vector2(random1, random2));
             }
         }
+        allMapPickups.InstantiatePickup1 = true;
     }
     #endregion
 
