@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class VictorySound : MonoBehaviour
+public class AudioPickup : MonoBehaviour
 {
     [SerializeField] AudioSource source;
     [SerializeField] AudioClip clip;
@@ -15,9 +14,9 @@ public class VictorySound : MonoBehaviour
     }
     private void Update()
     {
-        if (Time.timeSinceLevelLoad > 5f)
+        if (!source.isPlaying)
         {
-            SceneManager.LoadScene("MainMenu");
+            Destroy(gameObject);
         }
     }
 }
